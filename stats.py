@@ -6,7 +6,7 @@ cliLineInputNumber = 1
 fileInputNumber = 2
 
 
-def convertStringsIntoFloats(numbers):
+def convert_strings_into_floats(numbers):
     convertedNumbers = []
     for entry in numbers:
         try:
@@ -17,19 +17,18 @@ def convertStringsIntoFloats(numbers):
     return convertedNumbers
 
 
-def getNumberInput(option):
+def get_number_input(option):
     floatingInputNumbers = []
-
     if (option == cliLineInputNumber):
         print("Please enter floating numbers:")
         temp = sys.stdin.readline().split()
-        floatingInputNumbers = convertStringsIntoFloats(temp)
+        floatingInputNumbers = convert_strings_into_floats(temp)
     elif (option == fileInputNumber):
         f = open(sys.argv[2], "r")
         temp = f.readline().split()
         f.close()
 
-        floatingInputNumbers = convertStringsIntoFloats(temp)
+        floatingInputNumbers = convert_string_sinto_floats(temp)
     else:
         print("Argument doesn't match a floating number input option!\n")
         sys.exit(1)
@@ -37,61 +36,47 @@ def getNumberInput(option):
 
 
 # adding all values up and dividing by the total number
-def calculateMean(numbers):
+def calculate_mean(numbers):
     temp = 0.0
-
     for number in numbers:
         temp += number
     return temp / len(numbers)
 
 
 # sort values, count total numbers,
-# if odd numbers just divide, if even choose the next one
-def calculateMedian(numbers):
+# if odd numbers, add mid and to the right and divide
+def calculate_median(numbers):
     numbers = sorted(numbers)
     size = len(numbers)
-
+    mid = len(numbers) // 2
     if (size % 2 == 0):
-        return numbers[int(size / 2) + 1]
-    else: 
-        return numbers[int(size / 2)]
+        return (numbers[mid] + numbers[mid - 1]) / 2.0
+    else:
+        return numbers[mid]
 
 
-def calculateDeviation(numbers):
-    size = len(numbers) 
-    
+# get mean, adds values up minus the mean to the power of 2
+# then the sqr root of the deviation divided by the size is taken
+def calculate_deviation(numbers):
+    size = len(numbers)
     if (size <= 1):
         return null
-
-    mean = calculateMean(numbers)
+    mean = calculate_mean(numbers)
     deviation = 0.0
-
     for number in numbers:
-        deviation += (float(number) - mean)**2
+        deviation += (number - mean)**2
     deviation = math.sqrt(deviation / float(size - 1))
-
-    return deviation
-
-def calculateDeviation(numbers):
-    size = len(numbers) 
-    
-    if (size <= 1):
-        return null
-
-    mean = calculateMean(numbers)
-    deviation = 0.0
-
-    for number in numbers:
-        deviation += (float(number) - mean)**2
-    deviation = math.sqrt(deviation / float(size - 1))
-
     return deviation
 
 
 if __name__ == "__main__":
-    nums = getNumberInput(int(sys.argv[1]))
-    mean = calculateMean(nums)
-    median = calculateMedian(nums)
-    deviation = calculateDeviation(nums)
+    nums = get_number_input(int(sys.argv[1]))
+    mean = calculate_mean(nums)
+    median = calculate_median(nums)
+    deviation = calculate_deviation(nums)
 
-    print(f"Floating Numbers: {nums}\nMean: {mean}\nMedian: {median}\nStandard Deviation: {deviation}\n")
+    print(f"""
+    Floating Numbers: {nums}
+    Mean: {mean}
+    Median: {median}
+    Standard Deviation: {deviation}""")
