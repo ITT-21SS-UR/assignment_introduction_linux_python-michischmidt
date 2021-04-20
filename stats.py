@@ -1,29 +1,44 @@
 import sys
 
 
-inputChoice = 0
 cliLineInputNumber = 1
 fileInputNumber = 2
-floatingInputNumbers = []
 
 
-def convertInput():
-    global inputChoice, floatingInputNumbers
-    inputChoice = int(sys.argv[1])
-
-    if (inputChoice == cliLineInputNumber):
-        temp = sys.stdin.readline().split()
-        for entry in temp:
+def convertInputIntoFloats(numbers):
+    convertedNumbers = []
+    for entry in numbers:
             try:
-                floatingInputNumbers.append(float(entry))
+                convertedNumbers.append(float(entry))
             except ValueError:
+                # catching inputs other than floats
                 print(f"{entry} can't be converted to a float")
+    
+    return convertedNumbers
 
-    elif (inputChoice == fileInputNumber):
-        print(sys.argv)
+
+def getNumberInput(option):
+    floatingInputNumbers = []
+
+    if (option == cliLineInputNumber):
+        print("Please enter floating numbers:\n")
+        temp = sys.stdin.readline().split()
+        floatingInputNumbers = convertInputIntoFloats(temp)
+    elif (option == fileInputNumber):
+        f = open(sys.argv[2], "r")
+        temp = f.readline().split()
+        f.close()
+
+        floatingInputNumbers = convertInputIntoFloats(temp)
     else:
-        print("Argument doesn't match a file input option!\n")
+        print("Argument doesn't match a floating number input option!\n")
+        sys.exit(1)
+
+    return floatingInputNumbers
 
 
 if __name__ == "__main__":
-    convertInput()
+    nums = getNumberInput(int(sys.argv[1]))
+    # calculateMean()
+    # calculateMedian()
+    # calculateStandardDeviation()
